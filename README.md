@@ -169,8 +169,6 @@ Data Flow
         - Kiểm tra thông tin
         - Lưu data vào localStorage
         - Chuyển trang dashboard
-
-    
 - Dashboard
  - List data
     - Lấy data list từ localStorage
@@ -178,9 +176,16 @@ Data Flow
         - Phân loại theo ngày
     - Render ra data
  - Status:
+    - Lấy data từ localStorage
+    - Render qua mảng
+        - Tăng biến đếm cho từng status
+            - Tạo ra đối tượng đếm với key-value: status
+            - Lặp qua mảng để check status, tăng biến đếm của từng status
+    - Tính % theo từng status
+    - Render UI
  - Completed
     - Lấy data list từ localStorage
     - Kiểm tra status của data
-        - 
+        - Nếu completed thì render
 Function
 ```
