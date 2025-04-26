@@ -1,0 +1,29 @@
+@use '../base/' as *;
+
+.header {
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 37px 72px;
+  }
+  .logo {
+    color: $color-red-light;
+    font-size: $font-size-2xl;
+    font-weight: $font-semibold;
+    span {
+      color: $color-black;
+    }
+  }
+  &-day {
+    color: $color-black;
+    font-size: $font-size-sm;
+    font-weight: $font-medium;
+  }
+  &-date {
+    color: $color-blue-light;
+    font-size: $font-size-xs;
+    font-weight: $font-medium;
+  }
+}
