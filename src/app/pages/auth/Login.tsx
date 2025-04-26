@@ -1,57 +1,51 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { register } from '@app/shared/redux/actions/authActions';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/partials/Form';
 import { Input } from '@shared/components/partials/Input';
+import { login } from '@shared/redux/actions/authActions';
 
-interface IRegisterForm {
-  fullName: string;
+interface ILoginForm {
   email: string;
   password: string;
-  confirmPassword: string;
 }
 
-export const Register: React.FC = () => {
+export const Login: React.FC = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    getValues,
     reset,
-  } = useForm<IRegisterForm>({
+  } = useForm<ILoginForm>({
     defaultValues: {
-      fullName: '',
       email: '',
       password: '',
-      confirmPassword: '',
     },
   });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = async (data: IRegisterForm) => {
+  const onSubmit = async (data: ILoginForm) => {
     try {
-      const newUser = {
-        fullName: data.fullName,
+      const userLogin = {
         email: data.email,
         password: data.password,
       };
-      await dispatch(register(newUser));
-      toast.success('Register successfully');
-      navigate('/login');
+
+      await dispatch(login(userLogin));
+      toast.success('Login successfully');
+      navigate('/');
     } catch (error) {
-      toast.error('Email is already exists');
-      setTimeout(() => {
-        reset({ fullName: '', email: '', password: '', confirmPassword: '' });
-      }, 4000);
+      toast.error('Invalid email or password');
+      reset({ email: '', password: '' });
     }
   };
+
   return (
     <div className="register">
       <Form
@@ -64,21 +58,7 @@ export const Register: React.FC = () => {
           confirmPassword: '',
         }}
       >
-        <h1 className="form-title">Register</h1>
-        <Controller
-          name="fullName"
-          control={control}
-          rules={{ required: 'Full name is required' }}
-          render={({ field }) => (
-            <Input
-              {...field}
-              className="input"
-              label="Full name"
-              errorMessage={errors.fullName?.message}
-            />
-          )}
-        />
-
+        <h1 className="form-title">Welcome back!</h1>
         <Controller
           name="email"
           control={control}
@@ -93,7 +73,7 @@ export const Register: React.FC = () => {
             <Input
               {...field}
               className="input"
-              label="Email"
+              label="Username"
               errorMessage={errors.email?.message}
             />
           )}
@@ -119,32 +99,12 @@ export const Register: React.FC = () => {
             />
           )}
         />
-
-        <Controller
-          name="confirmPassword"
-          control={control}
-          rules={{
-            required: 'Confirm password is required',
-            validate: (value) =>
-              value === getValues('password') || 'Passwords must match',
-          }}
-          render={({ field }) => (
-            <Input
-              {...field}
-              className="input"
-              type="password"
-              label="Confirm Password"
-              errorMessage={errors.confirmPassword?.message}
-            />
-          )}
-        />
-
-        <Button className="btn btn-xl" type="submit" label="Register" />
+        <Button className="btn btn-xl" type="submit" label="Login" />
 
         <p className="form-link">
-          Yes, I have an account?{' '}
-          <Link to="/login">
-            <span>Login</span>
+          Don’t have and account?{' '}
+          <Link to="/register">
+            <span>Register</span>
           </Link>
         </p>
       </Form>

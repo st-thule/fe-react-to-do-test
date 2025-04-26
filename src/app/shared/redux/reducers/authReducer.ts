@@ -1,9 +1,9 @@
+import { User } from '@shared/models/User';
 import {
   getDataFromLocalStorage,
   LocalStorageKeys,
   setDataToLocalStorage,
 } from '@shared/utils/local-storage';
-import { User } from '@shared/models/User';
 import { LOGIN, LOGOUT, REGISTER } from '../actions/type/authActionTypes';
 
 interface AuthState {
@@ -42,7 +42,7 @@ export const authReducer = (state = initalState, action: Action): AuthState => {
 
       return {
         ...state,
-        users: updatedUser,
+        users: [...state.users, action.payload],
       };
 
     case LOGIN:
@@ -52,7 +52,6 @@ export const authReducer = (state = initalState, action: Action): AuthState => {
       );
       if (foundUser) {
         setDataToLocalStorage(LocalStorageKeys.CURRENT_USER, foundUser);
-
         return {
           ...state,
           currentUser: foundUser,
