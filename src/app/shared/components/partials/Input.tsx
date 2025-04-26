@@ -49,7 +49,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="input-wrapper">
-        {label && <label>{label}</label>}
+        {label && <label className="input-label">{label}</label>}
         <input
           ref={ref}
           id={name}

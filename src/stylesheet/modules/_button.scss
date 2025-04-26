@@ -1,0 +1,15 @@
+@use '../base/' as *;
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  background-color: $color-red-light;
+  color: $color-white;
+  font-size: $font-size-md;
+  font-weight: $font-medium;
+}
+
+.btn-xl {
+  width: 100%;
+  padding: 7px 161px;
+}

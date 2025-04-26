@@ -1,0 +1,30 @@
+@use '../base/' as *;
+
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  .btn {
+    margin-bottom: 24px;
+  }
+}
+
+.form-title {
+  width: 100%;
+  padding-bottom: 40px;
+  font-size: $font-size-2xl;
+  font-weight: $font-medium;
+}
+
+.form-link {
+  width: 100%;
+  font-size: $font-size-md;
+  font-weight: $font-normal;
+  span {
+    color: $color-black;
+    font-weight: $font-normal;
+  }
+}
