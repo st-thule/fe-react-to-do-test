@@ -1,6 +1,9 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { register } from '@app/shared/redux/actions/authActions';
+import { toast } from 'react-toastify';
 
 import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/partials/Form';
@@ -19,6 +22,7 @@ export const Register: React.FC = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm<IRegisterForm>({
     defaultValues: {
       fullName: '',
@@ -28,10 +32,26 @@ export const Register: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: IRegisterForm) => {
-    console.log(data);
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const onSubmit = async (data: IRegisterForm) => {
+    try {
+      const newUser = {
+        fullName: data.fullName,
+        email: data.email,
+        password: data.password,
+      };
+      await dispatch(register(newUser));
+      toast.success('Register successfully');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Email is already exists');
+      setTimeout(() => {
+        reset({ fullName: '', email: '', password: '', confirmPassword: '' });
+      }, 4000);
+    }
+  };
   return (
     <div className="register">
       <Form
@@ -51,13 +71,14 @@ export const Register: React.FC = () => {
           rules={{ required: 'Full name is required' }}
           render={({ field }) => (
             <Input
-              className="input"
               {...field}
+              className="input"
               label="Full name"
               errorMessage={errors.fullName?.message}
             />
           )}
         />
+
         <Controller
           name="email"
           control={control}
@@ -70,13 +91,14 @@ export const Register: React.FC = () => {
           }}
           render={({ field }) => (
             <Input
-              className="input"
               {...field}
+              className="input"
               label="Email"
               errorMessage={errors.email?.message}
             />
           )}
         />
+
         <Controller
           name="password"
           control={control}
@@ -89,14 +111,15 @@ export const Register: React.FC = () => {
           }}
           render={({ field }) => (
             <Input
-              className="input"
               {...field}
+              className="input"
               type="password"
               label="Password"
               errorMessage={errors.password?.message}
             />
           )}
         />
+
         <Controller
           name="confirmPassword"
           control={control}
@@ -107,15 +130,17 @@ export const Register: React.FC = () => {
           }}
           render={({ field }) => (
             <Input
-              className="input"
               {...field}
+              className="input"
               type="password"
               label="Confirm Password"
               errorMessage={errors.confirmPassword?.message}
             />
           )}
         />
+
         <Button className="btn btn-xl" type="submit" label="Register" />
+
         <p className="form-link">
           Yes, I have an account?{' '}
           <Link to="/login">

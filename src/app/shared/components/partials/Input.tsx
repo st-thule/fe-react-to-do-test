@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 interface InputProps {
   name?: string;
@@ -14,6 +14,8 @@ interface InputProps {
   type?: string;
   value?: string | number;
   errorMessage?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -28,25 +30,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       minLength,
       isReadOnly = false,
       isDisabled = false,
-      onInputBlur,
-      onInputChange,
+      onBlur,
+      onChange,
       value,
       errorMessage,
     },
     ref
   ) => {
-    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-      if (onInputBlur) {
-        onInputBlur(event.target.value);
-      }
-    };
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (onInputChange) {
-        onInputChange(event.target.value);
-      }
-    };
-
     return (
       <div className="input-wrapper">
         {label && <label className="input-label">{label}</label>}
@@ -62,11 +52,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           minLength={minLength}
           readOnly={isReadOnly}
           disabled={isDisabled}
-          onBlur={handleBlur}
-          onChange={handleChange}
+          onBlur={onBlur}
+          onChange={onChange}
         />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
     );
   }
 );
+
+Input.displayName = 'Input';

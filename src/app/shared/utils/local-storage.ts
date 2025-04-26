@@ -1,6 +1,7 @@
 export enum LocalStorageKeys {
   USERS = 'users',
   TODOS = 'todos',
+  CURRENT_USER = 'currentUser',
 }
 
 export const getDataFromLocalStorage = <T>(
