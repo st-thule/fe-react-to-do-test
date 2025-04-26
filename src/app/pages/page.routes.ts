@@ -1,11 +1,11 @@
-import { RouteObject } from 'react-router-dom';
-import { Page } from './Page';
 import React from 'react';
-import dashboardRoute from './dashboard/dashboard.routes';
-import detailRoutes from './detail-task/detail.routes';
-import loginRoute from './login/login.routes';
-import registerRoute from './register/register.routes';
-import myTaskRoutes from './my-task/my-Task.routes';
+import { RouteObject } from 'react-router-dom';
+
+import { Page } from '@app/pages/Page';
+import authRoutes from '@app/pages/auth/auth.routes';
+import dashboardRoute from '@app/pages/dashboard/dashboard.routes';
+import detailRoutes from '@app/pages/detail-task/detail.routes';
+import myTaskRoutes from '@app/pages/my-task/my-Task.routes';
 
 const pageRoutes: RouteObject[] = [
   {
@@ -14,10 +14,8 @@ const pageRoutes: RouteObject[] = [
     children: [
       ...dashboardRoute,
       ...detailRoutes,
-      ...loginRoute,
-      ...registerRoute,
       ...myTaskRoutes,
-      ...registerRoute,
+      ...authRoutes,
     ],
   },
 ];

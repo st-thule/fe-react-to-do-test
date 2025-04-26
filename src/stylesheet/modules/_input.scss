@@ -1,0 +1,18 @@
+@use '../base/' as *;
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 24px;
+
+  .input-label {
+    padding-bottom: 8px;
+  }
+
+  .input {
+    padding: 8px 0;
+    border: 1px solid $color-grey;
+    border-radius: 6px;
+  }
+}
