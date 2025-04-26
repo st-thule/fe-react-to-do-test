@@ -5,14 +5,14 @@
   flex-direction: column;
   width: 100%;
   padding-bottom: 24px;
-}
 
-.input-label {
-  padding-bottom: 8px;
-}
+  .input-label {
+    padding-bottom: 8px;
+  }
 
-.input {
-  border: 1px solid $color-grey;
-  border-radius: 6px;
-  padding: 8px 0;
+  .input {
+    padding: 8px 0;
+    border: 1px solid $color-grey;
+    border-radius: 6px;
+  }
 }

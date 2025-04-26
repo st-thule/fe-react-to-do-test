@@ -99,7 +99,11 @@ export const Login: React.FC = () => {
             />
           )}
         />
-        <Button className="btn btn-xl" type="submit" label="Login" />
+        <Button
+          className="btn btn-primary btn-xl"
+          type="submit"
+          label="Login"
+        />
 
         <p className="form-link">
           Don’t have and account?{' '}

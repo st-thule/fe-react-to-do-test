@@ -140,7 +140,11 @@ export const Register: React.FC = () => {
           )}
         />
 
-        <Button className="btn btn-xl" type="submit" label="Register" />
+        <Button
+          className="btn btn-primary btn-xl"
+          type="submit"
+          label="Register"
+        />
 
         <p className="form-link">
           Yes, I have an account?{' '}
