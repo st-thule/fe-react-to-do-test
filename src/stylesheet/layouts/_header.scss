@@ -1,6 +1,8 @@
 @use '../base/' as *;
 
 .header {
+  background-color: $color-grey-light;
+  box-shadow: 0px 4px 12px 0px #00000012;
   .wrapper {
     display: flex;
     flex-direction: row;

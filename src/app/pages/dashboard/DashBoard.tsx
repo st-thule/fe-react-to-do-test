@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const DashBoard = () => {
+export const DashBoard: React.FC = () => {
   return <></>;
 };

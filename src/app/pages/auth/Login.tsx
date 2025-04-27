@@ -1,6 +1,6 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -8,6 +8,7 @@ import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/partials/Form';
 import { Input } from '@shared/components/partials/Input';
 import { login } from '@shared/redux/actions/authActions';
+import { RootState } from '@shared/redux/store';
 
 interface ILoginForm {
   email: string;
@@ -26,9 +27,13 @@ export const Login: React.FC = () => {
       password: '',
     },
   });
-
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  if (currentUser) {
+    navigate('/');
+  }
 
   const onSubmit = async (data: ILoginForm) => {
     try {

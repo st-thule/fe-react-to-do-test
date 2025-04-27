@@ -18,3 +18,7 @@ export const setDataToLocalStorage = <T>(
 ): void => {
   localStorage.setItem(key, JSON.stringify(value));
 };
+
+export const removeItemFromLocalStorage = (key: LocalStorageKeys): void => {
+  localStorage.removeItem(key);
+};
