@@ -1,6 +1,6 @@
 export enum LocalStorageKeys {
   USERS = 'users',
-  TODOS = 'todos',
+  TASKS = 'tasks',
   CURRENT_USER = 'currentUser',
 }
 

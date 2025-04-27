@@ -1,1 +1,113 @@
 @use '../base/' as *;
+.dashboard {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 76px;
+  }
+
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 57px;
+
+    .title {
+      font-size: $font-size-3xl;
+      font-weight: $font-medium;
+      line-height: 34px;
+    }
+    img {
+      width: 100%;
+    }
+  }
+
+  .dashboard-content {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    .section {
+      padding: 20px 31px 46px 24px;
+    }
+    .section-todos {
+      height: calc(100vh - 57px);
+      display: flex;
+      flex-direction: column;
+    }
+    .section-header {
+      display: flex;
+      flex: 0 0 auto;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      .title {
+        color: $color-red-light;
+        font-size: $font-size-sm;
+        font-weight: $font-medium;
+      }
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+    }
+    .section-action {
+      color: $color-red-light;
+      span {
+        color: $color-grey-neutral;
+        font-size: $font-size-12;
+        font-weight: $font-normal;
+      }
+    }
+
+    .section-groups {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: $color-grey-neutral transparent;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $color-grey-neutral;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: darken($color-grey-neutral, 10%);
+      }
+      .group-title {
+        padding: 20px 0 18px;
+      }
+      .group-date {
+        color: $color-black;
+        font-size: $font-size-12;
+        font-weight: $font-normal;
+      }
+
+      .list-tasks {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .group-divide {
+        padding-top: 12px;
+        border-bottom: 1px solid $color-grey-neutral;
+      }
+    }
+
+    .section-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+    }
+  }
+}
