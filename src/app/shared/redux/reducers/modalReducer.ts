@@ -1,7 +1,11 @@
-import { Action } from 'redux';
-import { CLOSE_MODAL, OPEN_MODAL } from '../actions/type/modalActionTypes';
-import { CloseModalAction, OpenModalAction } from '../actions/modalAction';
-import { ppid } from 'process';
+import {
+  CLOSE_MODAL,
+  OPEN_MODAL,
+} from '@shared/redux/actions/type/modalActionTypes';
+import {
+  OpenModalAction,
+  CloseModalAction,
+} from '@shared/redux/actions/modalAction';
 
 interface ModalState {
   isOpen: boolean;
@@ -27,7 +31,7 @@ export const modalReducer = (
         ...state,
         isOpen: true,
         modalType: action.payload.modalType,
-        modalProps: action.payload.modalProps,
+        modalProps: action.payload.modalProps || {},
       };
     case CLOSE_MODAL:
       return {
@@ -36,7 +40,6 @@ export const modalReducer = (
         modalType: null,
         modalProps: {},
       };
-
     default:
       return state;
   }

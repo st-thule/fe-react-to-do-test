@@ -5,7 +5,9 @@ import Modal from 'react-modal';
 import Button from './Button';
 import { Form } from './Form';
 import { closeModal } from '@shared/redux/actions/modalAction';
-
+import { Status } from '@shared/constants/status';
+import { useForm, Controller } from 'react-hook-form';
+import { FormTask } from '@app/pages/components/FormTask';
 export const ModalComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isOpen, modalType, modalProps } = useSelector(
@@ -16,6 +18,14 @@ export const ModalComponent = () => {
     if (modalProps?.onConfirm) {
       modalProps.onConfirm();
     }
+    dispatch(closeModal());
+  };
+
+  const handleTaskFormSubmit = (data: any) => {
+    if (modalProps?.onSubmit) {
+      modalProps.onSubmit(data);
+    }
+
     dispatch(closeModal());
   };
 
@@ -43,6 +53,27 @@ export const ModalComponent = () => {
               onClick={() => dispatch(closeModal())}
             />
           </div>
+        </div>
+      )}
+
+      {modalType === 'TASK_FORM' && (
+        <div className="modal-content">
+          <h3 className="modal-title">
+            {modalProps?.isEdit ? 'Edit task' : 'Add new task'}
+          </h3>
+          <FormTask
+            defaultValues={
+              modalProps?.defaultValues || {
+                title: '',
+                dueDate: '',
+                description: '',
+                status: Status.NO_STARTED,
+              }
+            }
+            onSubmit={handleTaskFormSubmit}
+            onCancel={() => dispatch(closeModal())}
+            isEdit={modalProps?.isEdit || false}
+          />
         </div>
       )}
     </Modal>

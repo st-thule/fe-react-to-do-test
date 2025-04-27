@@ -1,6 +1,6 @@
 import { isToday, format } from 'date-fns';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@shared/redux/store';
 import { Task } from '@shared/models/Task';
 import { CardComponent } from '@shared/components/partials/Card';
@@ -10,6 +10,10 @@ import completeTask from '@assets/icons/complete-task.svg';
 import completedIcon from '@assets/icons/completed-icon.svg';
 import handWave from '@assets/images/hand-wave.png';
 import { Status } from '@shared/constants/status';
+import { openModal } from '@shared/redux/actions/modalAction';
+import { addTask } from '@shared/redux/actions/taskActions';
+import { toast } from 'react-toastify';
+import { TaskChart } from './components/TaskChart';
 
 // Dữ liệu giả để test UI
 const dummyTasks: Task[] = [
@@ -82,11 +86,13 @@ const dummyTasks: Task[] = [
 ];
 
 export const DashBoard: React.FC = () => {
-  // const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  // const userEmail = currentUser?.email || 'guest@example.com';
+  const dispatch = useDispatch();
+  const tasks = useSelector((state: RootState) => state.tasks.taskList);
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+  const userEmail = currentUser?.email;
 
-  const recentTasks = [...dummyTasks]
-
+  const recentTasks = [...tasks]
+    .filter((task) => task.userEmail === userEmail)
     .sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -107,11 +113,46 @@ export const DashBoard: React.FC = () => {
 
   const groupedTasks = groupTasksByDate(recentTasks);
 
+  const handleAddTask = () => {
+    dispatch(
+      openModal({
+        modalType: 'TASK_FORM',
+        modalProps: {
+          isEdit: false,
+          defaultValues: {
+            title: '',
+            dueDate: '',
+            description: '',
+            status: Status.NO_STARTED,
+          },
+          onSubmit: (data: {
+            title: string;
+            dueDate: string;
+            description: string;
+            status: Status;
+          }) => {
+            const newTask: Task = {
+              id: (tasks.length + 1).toString(),
+              title: data.title,
+              description: data.description,
+              status: data.status,
+              userEmail: userEmail,
+              createdAt: new Date().toISOString(),
+              dueDate: new Date(data.dueDate).toISOString(),
+            };
+            dispatch(addTask(newTask));
+            toast.success('Add task successfully');
+          },
+        },
+      })
+    );
+  };
+
   return (
     <div className="dashboard">
       <div className="container">
         <div className="dashboard-header">
-          {/* <h2 className="title">Welcome {currentUser?.fullName || 'Guest'}</h2> */}
+          <h2 className="title">Welcome {currentUser?.fullName || 'Guest'}</h2>
           {/* <img src={handWave} alt="hand wave" /> */}
         </div>
         <div className="dashboard-content">
@@ -122,7 +163,7 @@ export const DashBoard: React.FC = () => {
                 <h2 className="title">To-Do</h2>
               </div>
               <div className="section-action">
-                <p className="action" onClick={() => {}}>
+                <p className="action" onClick={handleAddTask}>
                   +<span>Add task</span>
                 </p>
               </div>
@@ -166,6 +207,7 @@ export const DashBoard: React.FC = () => {
                   <h2 className="title">Task Status</h2>
                 </div>
               </div>
+              <TaskChart tasks={tasks} />
             </section>
             <section className="section-completed">
               <div className="section-header">

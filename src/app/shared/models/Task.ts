@@ -7,5 +7,5 @@ export interface Task {
   description: string;
   userEmail: string;
   createdAt: string;
-  dueDate: string;
+  dueDate?: string;
 }
