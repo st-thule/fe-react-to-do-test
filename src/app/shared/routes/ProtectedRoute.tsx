@@ -1,23 +1,16 @@
-// src/shared/routes/ProtectedRoute.tsx
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 import { RootState } from '@shared/redux/store';
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-
-const ProtectedRoute = ({
-  children,
-}: ProtectedRouteProps): React.ReactElement | null => {
+const ProtectedRoute: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
 
   if (!currentUser) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
-
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { navList } from '@shared/constants/nav';
 import { AppDispatch, RootState } from '@shared/redux/store';
 import logoutIcon from '@assets/icons/logout-icon.svg';
 import { logout } from '@shared/redux/actions/authActions';
-import { toast } from 'react-toastify';
 import { openModal } from '@shared/redux/actions/modalAction';
 
 export const SideBar = () => {
@@ -56,7 +56,6 @@ export const SideBar = () => {
                   onConfirm: () => {
                     dispatch(logout());
                     toast.success('You logged out');
-                    navigate('/login');
                   },
                 },
               })

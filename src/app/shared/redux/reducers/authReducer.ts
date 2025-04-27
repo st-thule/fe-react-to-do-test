@@ -65,6 +65,7 @@ export const authReducer = (state = initalState, action: Action): AuthState => {
       removeItemFromLocalStorage(LocalStorageKeys.CURRENT_USER);
       return {
         ...state,
+        currentUser: null,
       };
 
     default:
