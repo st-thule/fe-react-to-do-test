@@ -1,33 +1,19 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@shared/redux/store';
 import Modal from 'react-modal';
-import Button from './Button';
-import { Form } from './Form';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { closeModal } from '@shared/redux/actions/modalAction';
-import { Status } from '@shared/constants/status';
-import { useForm, Controller } from 'react-hook-form';
+import { AppDispatch, RootState } from '@shared/redux/store';
+import { Status } from '@shared/utils/status';
 import { FormTask } from '@app/pages/components/FormTask';
+import Button from '@shared/components/partials/Button';
+import { ModalTypes } from '@shared/utils/modal-type';
+
 export const ModalComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isOpen, modalType, modalProps } = useSelector(
     (state: RootState) => state.modal
   );
-
-  const handleConfirmModal = () => {
-    if (modalProps?.onConfirm) {
-      modalProps.onConfirm();
-    }
-    dispatch(closeModal());
-  };
-
-  const handleTaskFormSubmit = (data: any) => {
-    if (modalProps?.onSubmit) {
-      modalProps.onSubmit(data);
-    }
-
-    dispatch(closeModal());
-  };
 
   return (
     <Modal
@@ -37,7 +23,7 @@ export const ModalComponent = () => {
       className="modal"
       overlayClassName="modal-overlay"
     >
-      {modalType === 'CONFIRM' && (
+      {modalType === ModalTypes.CONFIRM && (
         <div className="modal-content">
           <h3 className="modal-title">{modalProps.title}</h3>
           <p className="modal-message">{modalProps.message}</p>
@@ -45,7 +31,12 @@ export const ModalComponent = () => {
             <Button
               className="btn btn-primary btn-agree"
               label="Yes"
-              onClick={handleConfirmModal}
+              onClick={() => {
+                if (modalProps?.onConfirm) {
+                  modalProps.onConfirm();
+                }
+                dispatch(closeModal());
+              }}
             />
             <Button
               className="btn btn-primary"
@@ -56,11 +47,16 @@ export const ModalComponent = () => {
         </div>
       )}
 
-      {modalType === 'TASK_FORM' && (
+      {modalType === ModalTypes.TASK_FORM && (
         <div className="modal-content">
-          <h3 className="modal-title">
-            {modalProps?.isEdit ? 'Edit task' : 'Add new task'}
-          </h3>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              {modalProps?.isEdit ? 'Edit task' : 'Add new task'}
+            </h3>
+            <p onClick={() => dispatch(closeModal())} className="modal-back">
+              Go back
+            </p>
+          </div>
           <FormTask
             defaultValues={
               modalProps?.defaultValues || {
@@ -70,7 +66,13 @@ export const ModalComponent = () => {
                 status: Status.NO_STARTED,
               }
             }
-            onSubmit={handleTaskFormSubmit}
+            onSubmit={(data: any) => {
+              if (modalProps?.onSubmit) {
+                modalProps.onSubmit(data);
+              }
+
+              dispatch(closeModal());
+            }}
             onCancel={() => dispatch(closeModal())}
             isEdit={modalProps?.isEdit || false}
           />

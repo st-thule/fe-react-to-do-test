@@ -1,14 +1,13 @@
-import React from 'react';
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
 import Modal from 'react-modal';
+import { Provider } from 'react-redux';
+import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
+import { store } from '@shared/redux/store';
 import '../stylesheet/styles.scss';
 import appRoutes from './app.routes';
-import { Provider } from 'react-redux';
-import { store } from '@shared/redux/store';
-import { ToastContainer } from 'react-toastify';
 
 Modal.setAppElement('#root');
 

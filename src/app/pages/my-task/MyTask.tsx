@@ -1,15 +1,13 @@
-import { RootState } from '@shared/redux/store';
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '@shared/redux/actions/modalAction';
-import { Status } from '@shared/constants/status';
-import { Task } from '@shared/models/Task';
-import { addTask } from '@shared/redux/actions/taskActions';
-import { toast } from 'react-toastify';
+
 import { CardComponent } from '@shared/components/partials/Card';
 import { DetailComponent } from '@shared/components/partials/DetailComponent';
 import { Filter } from '@shared/components/partials/Filter';
+import { HeaderAddTask } from '@shared/components/partials/HeaderAddTask';
 import { Pagination } from '@shared/components/partials/Pagination';
+import { Task } from '@shared/models/Task';
+import { RootState } from '@shared/redux/store';
 
 export const MyTask = () => {
   const dispatch = useDispatch();
@@ -18,49 +16,12 @@ export const MyTask = () => {
   const userEmail = currentUser?.email;
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  // State cho search, filter, sort và pagination
-  const [searchQuery, setSearchQuery] = useState<string>(''); // Tìm kiếm theo title
-  const [filterStatus, setFilterStatus] = useState<string>('All'); // Lọc theo status
-  const [sortOrder, setSortOrder] = useState<string>('newest'); // Sắp xếp theo ngày tạo
-  const [currentPage, setCurrentPage] = useState<number>(1); // Trang hiện tại
-  const tasksPerPage = 5; // Số task mỗi trang
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filterStatus, setFilterStatus] = useState<string>('All');
+  const [sortOrder, setSortOrder] = useState<string>('newest');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const tasksPerPage = 5;
 
-  const handleAddTask = () => {
-    dispatch(
-      openModal({
-        modalType: 'TASK_FORM',
-        modalProps: {
-          isEdit: false,
-          defaultValues: {
-            title: '',
-            dueDate: '',
-            description: '',
-            status: Status.NO_STARTED,
-          },
-          onSubmit: (data: {
-            title: string;
-            dueDate: string;
-            description: string;
-            status: Status;
-          }) => {
-            const newTask: Task = {
-              id: (tasks.length + 1).toString(),
-              title: data.title,
-              description: data.description,
-              status: data.status,
-              userEmail: userEmail,
-              createdAt: new Date().toISOString(),
-              dueDate: new Date(data.dueDate).toISOString(),
-            };
-            dispatch(addTask(newTask));
-            toast.success('Add task successfully');
-          },
-        },
-      })
-    );
-  };
-
-  // Logic xử lý search, filter và sort
   const filteredTasks = useMemo(() => {
     let result = [...tasks];
 
@@ -107,27 +68,22 @@ export const MyTask = () => {
               <div className="section-title">
                 <h2 className="title">To-Do</h2>
               </div>
-              <div className="section-action">
-                <p className="action" onClick={handleAddTask}>
-                  +<span>Add task</span>
-                </p>
-              </div>
+              <HeaderAddTask tasks={tasks} userEmail={userEmail} />
             </div>
 
-            {/* Sử dụng Filter component và thêm dropdown filter status */}
             <div className="section-utility">
               <Filter
                 onSearch={(keySearch) => {
                   setSearchQuery(keySearch);
-                  setCurrentPage(1); // Reset về trang 1 khi search
+                  setCurrentPage(1);
                 }}
                 onSort={(order) => {
                   setSortOrder(order);
-                  setCurrentPage(1); // Reset về trang 1 khi sort
+                  setCurrentPage(1);
                 }}
                 onFilterStatus={(status) => {
                   setFilterStatus(status);
-                  setCurrentPage(1); // Reset về trang 1 khi filter
+                  setCurrentPage(1);
                 }}
               />
             </div>
@@ -148,7 +104,6 @@ export const MyTask = () => {
               )}
             </ul>
 
-            {/* Sử dụng Pagination component */}
             {totalTasks > 0 && (
               <Pagination
                 totalItems={totalTasks}

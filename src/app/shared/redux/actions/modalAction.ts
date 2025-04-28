@@ -1,4 +1,5 @@
-import { Action } from 'redux'; // Import Action từ redux
+import { Action } from 'redux';
+
 import {
   CLOSE_MODAL,
   OPEN_MODAL,

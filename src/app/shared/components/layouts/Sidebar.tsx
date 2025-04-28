@@ -1,19 +1,19 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { navList } from '@shared/constants/nav';
 import { AppDispatch, RootState } from '@shared/redux/store';
-import logoutIcon from '@assets/icons/logout-icon.svg';
 import { logout } from '@shared/redux/actions/authActions';
 import { openModal } from '@shared/redux/actions/modalAction';
+import { ModalTypes } from '@shared/utils/modal-type';
+import { navList } from '@shared/constants/nav';
+import logoutIcon from '@assets/icons/logout-icon.svg';
 
 export const SideBar = () => {
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
 
   return (
     <aside className="sidebar">
@@ -49,7 +49,7 @@ export const SideBar = () => {
           onClick={() => {
             dispatch(
               openModal({
-                modalType: 'CONFIRM',
+                modalType: ModalTypes.CONFIRM,
                 modalProps: {
                   title: 'Confirm logout',
                   message: 'Are you sure to logout?',

@@ -1,14 +1,14 @@
 import { Task } from '@shared/models/Task';
 import {
+  ADD_TASK,
+  DELETE_TASK,
+  EDIT_TASK,
+} from '@shared/redux/actions/type/taskActionTypes';
+import {
   getDataFromLocalStorage,
   LocalStorageKeys,
   setDataToLocalStorage,
 } from '@shared/utils/local-storage';
-import {
-  ADD_TASK,
-  DELETE_TASK,
-  EDIT_TASK,
-} from '../actions/type/taskActionTypes';
 
 interface TaskState {
   taskList: Task[];

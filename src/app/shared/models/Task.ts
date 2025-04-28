@@ -1,4 +1,4 @@
-import { Status } from '@shared/constants/status';
+import { Status } from '@shared/utils/status';
 
 export interface Task {
   id: string;

@@ -1,92 +1,19 @@
-import { isToday, format } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@shared/redux/store';
-import { Task } from '@shared/models/Task';
-import { CardComponent } from '@shared/components/partials/Card';
 
-import pendingIcon from '@assets/icons/pending-icon.svg';
+import { TaskChart } from '@app/pages/dashboard/components/TaskChart';
 import completeTask from '@assets/icons/complete-task.svg';
 import completedIcon from '@assets/icons/completed-icon.svg';
+import pendingIcon from '@assets/icons/pending-icon.svg';
 import handWave from '@assets/images/hand-wave.png';
-import { Status } from '@shared/constants/status';
-import { openModal } from '@shared/redux/actions/modalAction';
-import { addTask } from '@shared/redux/actions/taskActions';
-import { toast } from 'react-toastify';
-import { TaskChart } from './components/TaskChart';
-
-// Dữ liệu giả để test UI
-const dummyTasks: Task[] = [
-  {
-    id: '1',
-    title: 'Attend Birthday Party',
-    description:
-      'Buy gifts on the way and pick up cake from the bakery at 6PM.',
-    status: Status.NO_STARTED,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-26T10:00:00Z',
-    dueDate: '2025-04-27T18:00:00Z',
-  },
-  {
-    id: '2',
-    title: 'Landing Page Design',
-    description:
-      'Get the work done by EOD and discuss with client before leaving.',
-    status: Status.IN_PROGRESS,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-26T09:00:00Z',
-    dueDate: '2025-04-27T17:00:00Z',
-  },
-  {
-    id: '3',
-    title: 'Final Product Review',
-    description:
-      'Make sure everything is functioning and all necessities are met.',
-    status: Status.IN_PROGRESS,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-26T14:00:00Z',
-    dueDate: '2025-04-28T12:00:00Z',
-  },
-  {
-    id: '4',
-    title: 'Review Code',
-    description: 'Review the pull request and provide feedback by EOD.',
-    status: Status.IN_PROGRESS,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-26T12:00:00Z',
-    dueDate: '2025-04-27T23:59:59Z',
-  },
-  {
-    id: '5',
-    title: 'Update Documentation',
-    description: 'Update the API docs with the latest changes.',
-    status: Status.NO_STARTED,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-25T08:00:00Z',
-    dueDate: '2025-04-30T00:00:00Z',
-  },
-  {
-    id: '6',
-    title: 'Prepare Presentation',
-    description: 'Prepare slides for the team meeting.',
-    status: Status.NO_STARTED,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-25T07:00:00Z',
-    dueDate: '2025-04-29T00:00:00Z',
-  },
-  {
-    id: '7',
-    title: 'Schedule Client Call',
-    description: 'Set up a call with the client to discuss project updates.',
-    status: Status.NO_STARTED,
-    userEmail: 'user@example.com',
-    createdAt: '2025-04-24T15:00:00Z',
-    dueDate: '2025-04-28T00:00:00Z',
-  },
-];
+import { CardComponent } from '@shared/components/partials/Card';
+import { HeaderAddTask } from '@shared/components/partials/HeaderAddTask';
+import { Task } from '@shared/models/Task';
+import { RootState } from '@shared/redux/store';
+import { Status } from '@shared/utils/status';
 
 export const DashBoard: React.FC = () => {
-  const dispatch = useDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.taskList);
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const userEmail = currentUser?.email;
@@ -110,50 +37,18 @@ export const DashBoard: React.FC = () => {
     });
     return grouped;
   };
-
   const groupedTasks = groupTasksByDate(recentTasks);
 
-  const handleAddTask = () => {
-    dispatch(
-      openModal({
-        modalType: 'TASK_FORM',
-        modalProps: {
-          isEdit: false,
-          defaultValues: {
-            title: '',
-            dueDate: '',
-            description: '',
-            status: Status.NO_STARTED,
-          },
-          onSubmit: (data: {
-            title: string;
-            dueDate: string;
-            description: string;
-            status: Status;
-          }) => {
-            const newTask: Task = {
-              id: (tasks.length + 1).toString(),
-              title: data.title,
-              description: data.description,
-              status: data.status,
-              userEmail: userEmail,
-              createdAt: new Date().toISOString(),
-              dueDate: new Date(data.dueDate).toISOString(),
-            };
-            dispatch(addTask(newTask));
-            toast.success('Add task successfully');
-          },
-        },
-      })
-    );
-  };
+  const completedTasks = tasks.filter(
+    (task) => task.status === Status.COMPLETED
+  );
 
   return (
     <div className="dashboard">
       <div className="container">
         <div className="dashboard-header">
           <h2 className="title">Welcome {currentUser?.fullName || 'Guest'}</h2>
-          {/* <img src={handWave} alt="hand wave" /> */}
+          <img src={handWave} alt="hand wave" />
         </div>
         <div className="dashboard-content">
           <section className="section section-todos">
@@ -162,11 +57,7 @@ export const DashBoard: React.FC = () => {
                 <img src={pendingIcon} alt="pending icon" />
                 <h2 className="title">To-Do</h2>
               </div>
-              <div className="section-action">
-                <p className="action" onClick={handleAddTask}>
-                  +<span>Add task</span>
-                </p>
-              </div>
+              <HeaderAddTask tasks={tasks} userEmail={userEmail} />
             </div>
             <div className="section-groups">
               {recentTasks.length === 0 ? (
@@ -217,6 +108,16 @@ export const DashBoard: React.FC = () => {
                   <h2 className="title">Completed Task</h2>
                 </div>
               </div>
+              <ul className="list-tasks">
+                {completedTasks.map((task) => (
+                  <CardComponent
+                    className=""
+                    task={task}
+                    key={task.id}
+                    isLink={true}
+                  />
+                ))}
+              </ul>
             </section>
           </section>
         </div>

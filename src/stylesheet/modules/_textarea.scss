@@ -1,0 +1,17 @@
+@use '../base/' as *;
+
+.textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .textarea-label {
+    padding-bottom: 9px;
+  }
+
+  .textarea {
+    padding-bottom: 14px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid $color-grey-neutral;
+  }
+}

@@ -1,7 +1,8 @@
-import { Status } from '@shared/constants/status';
-import { Task } from '@shared/models/Task';
 import React from 'react';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+
+import { Status } from '@shared/utils/status';
+import { Task } from '@shared/models/Task';
 
 interface ITaskChartProps {
   tasks: Task[];

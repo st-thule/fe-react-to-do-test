@@ -2,12 +2,12 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { register } from '@app/shared/redux/actions/authActions';
 import { toast } from 'react-toastify';
 
 import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/partials/Form';
 import { Input } from '@shared/components/partials/Input';
+import { register } from '@app/shared/redux/actions/authActions';
 
 interface IRegisterForm {
   fullName: string;

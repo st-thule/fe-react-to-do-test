@@ -1,6 +1,7 @@
 import React from 'react';
-// import leftArrow from '@assets/icons/arrow/left-icon.svg';
-// import rightArrow from '@assets/icons/arrow/right-icon.svg';
+
+import leftArrow from '@assets/icons/arrow/left-icon.svg';
+import rightArrow from '@assets/icons/arrow/right-icon.svg';
 
 interface PaginationProps {
   totalItems: number;
@@ -56,7 +57,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               handlePageChange(currentPage > 1 ? currentPage - 1 : 1);
             }}
           >
-            <img src={'leftArrow'} alt="previous" />
+            <img src={leftArrow} alt="previous" />
           </a>
         </li>
         {pages.map((item, index) => (
@@ -87,7 +88,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               );
             }}
           >
-            <img src={'rightArrow'} alt="next" />
+            <img src={rightArrow} alt="next" />
           </a>
         </li>
       </ul>

@@ -18,12 +18,12 @@
       color: $color-black;
     }
   }
-  &-day {
+  &.header-day {
     color: $color-black;
     font-size: $font-size-sm;
     font-weight: $font-medium;
   }
-  &-date {
+  &.header-date {
     color: $color-blue-light;
     font-size: $font-size-xs;
     font-weight: $font-medium;
