@@ -19,7 +19,6 @@ export const MyTask = () => {
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [sortOrder, setSortOrder] = useState<string>('newest');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const tasksPerPage = 5;
 
   const filteredTasks = useMemo(() => {
     let result = [...tasks];
@@ -48,8 +47,8 @@ export const MyTask = () => {
 
   // Logic xử lý pagination
   const totalTasks = filteredTasks.length;
-  const startIndex = (currentPage - 1) * tasksPerPage;
-  const endIndex = startIndex + tasksPerPage;
+  const startIndex = (currentPage - 1) * 5;
+  const endIndex = startIndex + 5;
   const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
 
   // Xử lý thay đổi trang
@@ -106,7 +105,7 @@ export const MyTask = () => {
             {totalTasks > 0 && (
               <Pagination
                 totalItems={totalTasks}
-                itemsPerPage={tasksPerPage}
+                itemsPerPage={5}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
