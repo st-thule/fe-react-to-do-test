@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@shared/redux/store';
+
 import { Task } from '@shared/models/Task';
 import { CardComponent } from '@shared/components/partials/Card';
 import { DetailComponent } from '@shared/components/partials/DetailComponent';
 import { HeaderAddTask } from '@shared/components/partials/HeaderAddTask';
 import { Filter } from '@shared/components/partials/Filter';
 import { Pagination } from '@shared/components/partials/Pagination';
-import { paginate } from '@shared/utils/pagination'; // Import hàm paginate
+import { paginate } from '@shared/utils/pagination';
 
 export const MyTask = () => {
   const tasks = useSelector((state: RootState) => state.tasks.taskList);
