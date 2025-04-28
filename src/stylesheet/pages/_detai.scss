@@ -1,0 +1,56 @@
+@use '../base/' as *;
+
+.section-detail {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 27px 28px;
+  height: 100vh;
+  border: 1px solid #a1a3ab; // Thêm border quanh section-detail
+  border-radius: 14px;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .section-title {
+    padding-bottom: 26px;
+    color: $color-black;
+    font-size: $font-size-xl;
+    font-weight: $font-semibold;
+  }
+
+  .section-subtitle {
+    padding-bottom: 15px;
+    font-size: $font-size-12;
+    font-weight: $font-normal;
+    color: $color-black;
+  }
+
+  .section-date {
+    padding-bottom: 31px;
+    color: $color-grey-neutral;
+    font-size: $font-size-10;
+    font-weight: $font-normal;
+  }
+
+  .section-desc {
+    color: $color-grey;
+    font-size: $font-size-md;
+    font-weight: $font-bold;
+  }
+
+  .section-action {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-top: auto; // Đẩy section-action xuống dưới cùng
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+}

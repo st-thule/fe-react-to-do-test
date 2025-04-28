@@ -189,6 +189,7 @@ export const DashBoard: React.FC = () => {
                             className=""
                             task={task}
                             key={task.id}
+                            isLink={true}
                           />
                         ))}
                       </ul>

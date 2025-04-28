@@ -23,6 +23,12 @@
   }
 }
 
+.list-charts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .card {
   display: flex;
   flex-direction: row;
@@ -57,13 +63,13 @@
   .card-date {
     color: $color-grey-neutral;
   }
-  .status-start {
-    color: $color-red;
-  }
-  .status-progress {
-    color: $color-blue;
-  }
-  .status-done {
-    color: $color-green;
-  }
+}
+.status-start {
+  color: $color-red;
+}
+.status-progress {
+  color: $color-blue;
+}
+.status-done {
+  color: $color-green;
 }

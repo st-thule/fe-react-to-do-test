@@ -12,18 +12,17 @@ export const addTask = (task: Task) => {
     payload: task,
   };
 };
-
-export const editTask = (taskId: string, updateFields: Partial<Task>) => {
+export const editTask = (id: string, updateFields: Partial<Task>) => {
   return {
     type: EDIT_TASK,
-    payload: { taskId, updateFields },
+    payload: { id, updateFields },
   };
 };
 
-export const deleteTask = (taskId: string) => {
+export const deleteTask = (id: string) => {
   return {
     type: DELETE_TASK,
-    payload: taskId,
+    payload: id,
   };
 };
 

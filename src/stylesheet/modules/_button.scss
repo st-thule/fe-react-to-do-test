@@ -25,4 +25,9 @@
   &.btn-agree {
     background-color: $color-green;
   }
+  &.btn-icon {
+    aspect-ratio: 1 / 1;
+    width: 5%;
+    height: 3%;
+  }
 }
