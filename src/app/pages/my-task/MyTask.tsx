@@ -1,13 +1,13 @@
-import React, { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@shared/redux/store';
+import { Task } from '@shared/models/Task';
 import { CardComponent } from '@shared/components/partials/Card';
 import { DetailComponent } from '@shared/components/partials/DetailComponent';
-import { Filter } from '@shared/components/partials/Filter';
 import { HeaderAddTask } from '@shared/components/partials/HeaderAddTask';
+import { Filter } from '@shared/components/partials/Filter';
 import { Pagination } from '@shared/components/partials/Pagination';
-import { Task } from '@shared/models/Task';
-import { RootState } from '@shared/redux/store';
+import { paginate } from '@shared/utils/pagination'; // Import hàm paginate
 
 export const MyTask = () => {
   const tasks = useSelector((state: RootState) => state.tasks.taskList);
@@ -19,56 +19,49 @@ export const MyTask = () => {
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [sortOrder, setSortOrder] = useState<string>('newest');
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const tasksPerPage = 5;
 
   const filteredTasks = useMemo(() => {
     let result = [...tasks];
-
-    // Search theo title
     if (searchQuery) {
       result = result.filter((task) =>
         task.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
-    // Filter theo status
     if (filterStatus !== 'All') {
       result = result.filter((task) => task.status === filterStatus);
     }
-
-    // Sort theo ngày tạo
     result.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime();
       const dateB = new Date(b.createdAt).getTime();
       return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
     });
-
     return result;
   }, [tasks, searchQuery, filterStatus, sortOrder]);
 
-  // Logic xử lý pagination
-  const totalTasks = filteredTasks.length;
-  const startIndex = (currentPage - 1) * 5;
-  const endIndex = startIndex + 5;
-  const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
+  // Sử dụng hàm paginate
+  const { totalItems: totalTasks, paginatedItems: paginatedTasks } = paginate({
+    items: filteredTasks,
+    currentPage,
+    itemsPerPage: tasksPerPage,
+  });
 
-  // Xử lý thay đổi trang
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setSelectedTask(null);
   };
 
   return (
-    <section className="dashboard">
-      <div className="container">
-        <div className="my-task">
+    <section className="my-task">
+      <div className="container task-layout">
+        <div className="task-list-column">
           <section className="section section-todos">
             <div className="section-header">
               <div className="section-title">
                 <h2 className="title">To-Do</h2>
               </div>
-              <HeaderAddTask tasks={tasks} userEmail={userEmail} />
+              <HeaderAddTask tasks={tasks} userEmail={userEmail || ''} />
             </div>
-
             <div className="section-utility">
               <Filter
                 onSearch={(keySearch) => {
@@ -85,7 +78,6 @@ export const MyTask = () => {
                 }}
               />
             </div>
-
             <ul className="list-tasks">
               {paginatedTasks.length > 0 ? (
                 paginatedTasks.map((task) => (
@@ -101,25 +93,24 @@ export const MyTask = () => {
                 <p>No tasks found.</p>
               )}
             </ul>
-
             {totalTasks > 0 && (
               <Pagination
                 totalItems={totalTasks}
-                itemsPerPage={5}
+                itemsPerPage={tasksPerPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
             )}
           </section>
-          {selectedTask && (
-            <div className="task-detail-column">
-              <DetailComponent
-                task={selectedTask}
-                onClose={() => setSelectedTask(null)}
-              />
-            </div>
-          )}
         </div>
+        {selectedTask && (
+          <div className="task-detail-column">
+            <DetailComponent
+              task={selectedTask}
+              onClose={() => setSelectedTask(null)}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
