@@ -1,0 +1,13 @@
+@use '../base/' as *;
+
+.page-content {
+  display: flex;
+  flex-direction: row;
+  padding-top: 56px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 76px;
+}

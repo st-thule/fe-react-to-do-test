@@ -2,9 +2,14 @@ import { User } from '@shared/models/User';
 import {
   getDataFromLocalStorage,
   LocalStorageKeys,
+  removeItemFromLocalStorage,
   setDataToLocalStorage,
 } from '@shared/utils/local-storage';
-import { LOGIN, LOGOUT, REGISTER } from '../actions/type/authActionTypes';
+import {
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+} from '@shared/redux/actions/type/authActionTypes';
 
 interface AuthState {
   users: User[];
@@ -61,7 +66,7 @@ export const authReducer = (state = initalState, action: Action): AuthState => {
       }
 
     case LOGOUT:
-      setDataToLocalStorage(LocalStorageKeys.CURRENT_USER, null);
+      removeItemFromLocalStorage(LocalStorageKeys.CURRENT_USER);
       return {
         ...state,
         currentUser: null,

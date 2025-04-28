@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   &.btn-primary {
+    padding: 8px 25px;
     border: none;
     border-radius: 6px;
     background-color: $color-red-light;
@@ -12,9 +13,21 @@
     font-size: $font-size-md;
     font-weight: $font-medium;
     text-align: center;
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
   }
   &.btn-xl {
     width: 100%;
     padding: 7px 161px;
+  }
+  &.btn-agree {
+    background-color: $color-green;
+  }
+  &.btn-icon {
+    aspect-ratio: 1 / 1;
+    width: 5%;
+    height: 3%;
   }
 }

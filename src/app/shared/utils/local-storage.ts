@@ -1,6 +1,6 @@
 export enum LocalStorageKeys {
   USERS = 'users',
-  TODOS = 'todos',
+  TASKS = 'tasks',
   CURRENT_USER = 'currentUser',
 }
 
@@ -17,4 +17,8 @@ export const setDataToLocalStorage = <T>(
   value: T
 ): void => {
   localStorage.setItem(key, JSON.stringify(value));
+};
+
+export const removeItemFromLocalStorage = (key: LocalStorageKeys): void => {
+  localStorage.removeItem(key);
 };

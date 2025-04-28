@@ -30,3 +30,67 @@
   padding-top: 10px;
   color: $color-red;
 }
+
+.form-task {
+  padding: 14px 17px;
+  border-radius: 4px;
+  border: 1px solid $color-grey-neutral;
+  .group-checkbox {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      font-size: $font-size-13;
+      font-weight: $font-normal;
+      color: $color-grey-neutral;
+      .status-dot {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        &.not-started {
+          background-color: $color-red;
+        }
+        &.in-progress {
+          background-color: $color-blue;
+        }
+        &.completed {
+          background-color: $color-green;
+        }
+      }
+
+      input[type='checkbox'] {
+        display: none;
+      }
+      .checkbox-custom {
+        position: relative;
+        width: 15px;
+        height: 15px;
+        border: 2px solid $color-grey-neutral;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      input[type='checkbox']:checked + .checkbox-custom {
+        border-color: $color-grey;
+        background-color: $color-grey;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 10px;
+          height: 10px;
+          background-color: $color-white;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}

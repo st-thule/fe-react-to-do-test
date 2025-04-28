@@ -1,0 +1,39 @@
+@use '../base/' as *;
+
+.section-todos {
+  .section-header {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    .title {
+      color: $color-red-light;
+      font-size: $font-size-sm;
+      font-weight: $font-medium;
+    }
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+  }
+
+  .section-utility {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.section-pagination {
+  padding-top: 20px;
+}
+
+.my-task {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  .section-todos {
+    width: 50%;
+  }
+}

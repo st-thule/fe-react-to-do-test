@@ -11,8 +11,11 @@
   }
 
   .input {
-    padding: 8px 0;
+    padding: 8px;
     border: 1px solid $color-grey;
     border-radius: 6px;
+    &.input-sm {
+      width: 50%;
+    }
   }
 }

@@ -1,5 +1,9 @@
 import { User } from '@shared/models/User';
-import { LOGIN, LOGOUT, REGISTER } from './type/authActionTypes';
+import {
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+} from '@shared/redux/actions/type/authActionTypes';
 
 export const register = (user: User) => {
   return {

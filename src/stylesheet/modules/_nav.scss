@@ -1,0 +1,37 @@
+@use '../base/' as *;
+
+.nav {
+  .list-menus {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .list-item {
+      padding: 17px 16px;
+      .menu {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        color: $color-white;
+        font-size: $font-size-md;
+        font-weight: $font-medium;
+        transition: 0.3s;
+
+        &-title {
+          font-size: $font-size-md;
+          font-weight: $font-medium;
+        }
+      }
+
+      &.menu-active {
+        background-color: $color-white;
+        .menu {
+          color: $color-red-light;
+
+          .menu-title {
+            color: $color-red-light;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+@use '../base/' as *;
+
+.list-charts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+
+  .card-title {
+    padding-bottom: 11px;
+    color: $color-black;
+    font-size: $font-size-md;
+    font-weight: $font-semibold;
+  }
+
+  .card-desc {
+    padding-bottom: 29px;
+    color: $color-grey;
+    font-size: $font-size-xs;
+    font-weight: $font-normal;
+    max-width: 100%;
+    max-height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+  }
+
+  .card-detail {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $font-size-10;
+    font-weight: $font-normal;
+  }
+
+  .card-status {
+    color: $color-black;
+  }
+  .card-date {
+    color: $color-grey-neutral;
+  }
+}
+.status-start {
+  color: $color-red;
+}
+.status-progress {
+  color: $color-blue;
+}
+.status-done {
+  color: $color-green;
+}
