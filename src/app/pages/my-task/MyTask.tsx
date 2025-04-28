@@ -10,7 +10,6 @@ import { Task } from '@shared/models/Task';
 import { RootState } from '@shared/redux/store';
 
 export const MyTask = () => {
-  const dispatch = useDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.taskList);
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const userEmail = currentUser?.email;
@@ -56,13 +55,13 @@ export const MyTask = () => {
   // Xử lý thay đổi trang
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setSelectedTask(null); // Ẩn chi tiết task khi đổi trang
+    setSelectedTask(null);
   };
 
   return (
-    <section className="my-task">
-      <div className="container task-layout">
-        <div className="task-list-column">
+    <section className="dashboard">
+      <div className="container">
+        <div className="my-task">
           <section className="section section-todos">
             <div className="section-header">
               <div className="section-title">
@@ -113,15 +112,15 @@ export const MyTask = () => {
               />
             )}
           </section>
+          {selectedTask && (
+            <div className="task-detail-column">
+              <DetailComponent
+                task={selectedTask}
+                onClose={() => setSelectedTask(null)}
+              />
+            </div>
+          )}
         </div>
-        {selectedTask && (
-          <div className="task-detail-column">
-            <DetailComponent
-              task={selectedTask}
-              onClose={() => setSelectedTask(null)}
-            />
-          </div>
-        )}
       </div>
     </section>
   );

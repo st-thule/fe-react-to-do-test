@@ -34,90 +34,86 @@ export const DetailComponent = ({ task: propTask }: DetailComponentProps) => {
 
   return (
     <section className="section section-detail">
-      <div className="container">
-        <div className="section-header">
-          <h3 className="section-title">{task.title}</h3>
-          <Link to="/">Go Back</Link>
-        </div>
-        <div className="section-content">
-          <p className="section-subtitle">
-            Status:
-            <span
-              className={
-                task.status === Status.NO_STARTED
-                  ? 'status-start'
-                  : task.status === Status.IN_PROGRESS
-                  ? 'status-progress'
-                  : 'status-done'
-              }
-            >
-              {formatStatus(task.status)}
-            </span>
-          </p>
-          <p className="section-date">
-            Created on: {formatDate(task.createdAt)}
-          </p>
-          <p className="section-desc">{task.description}</p>
-        </div>
-        <div className="section-action">
-          <Button
-            className="btn btn-primary btn-icon"
-            icon={deleteIcon}
-            onClick={() => {
-              dispatch(
-                openModal({
-                  modalType: 'CONFIRM',
-                  modalProps: {
-                    title: 'Confirm delete',
-                    message: 'Are you sure to delete this task?',
-                    onConfirm: () => {
-                      dispatch(deleteTask(task.id));
-                      toast.success('Delete task successfully');
-                      navigate('/');
-                    },
+      <div className="section-header">
+        <h3 className="section-title">{task.title}</h3>
+        <Link to="/">Go Back</Link>
+      </div>
+      <div className="section-content">
+        <p className="section-subtitle">
+          Status:
+          <span
+            className={
+              task.status === Status.NO_STARTED
+                ? 'status-start'
+                : task.status === Status.IN_PROGRESS
+                ? 'status-progress'
+                : 'status-done'
+            }
+          >
+            {formatStatus(task.status)}
+          </span>
+        </p>
+        <p className="section-date">Created on: {formatDate(task.createdAt)}</p>
+        <p className="section-desc">{task.description}</p>
+      </div>
+      <div className="section-action">
+        <Button
+          className="btn btn-primary btn-icon"
+          icon={deleteIcon}
+          onClick={() => {
+            dispatch(
+              openModal({
+                modalType: 'CONFIRM',
+                modalProps: {
+                  title: 'Confirm delete',
+                  message: 'Are you sure to delete this task?',
+                  onConfirm: () => {
+                    dispatch(deleteTask(task.id));
+                    toast.success('Delete task successfully');
+                    navigate('/');
                   },
-                })
-              );
-            }}
-          />
-          <Button
-            className="btn btn-primary btn-icon"
-            icon={editIcon}
-            onClick={() => {
-              dispatch(
-                openModal({
-                  modalType: 'TASK_FORM',
-                  modalProps: {
-                    isEdit: true,
-                    defaultValues: {
-                      title: task.title,
-                      dueDate: task.dueDate,
-                      description: task.description,
-                      status: task.status,
-                    },
-                    onSubmit: (data: {
-                      title: string;
-                      dueDate: string;
-                      description: string;
-                      status: Status;
-                    }) => {
-                      const updatedFields: Partial<Task> = {
-                        title: data.title,
-                        description: data.description,
-                        status: data.status,
-                        dueDate: new Date(data.dueDate).toISOString(),
-                      };
-                      dispatch(editTask(task.id, updatedFields));
-                      toast.success('Update task successfully');
-                      navigate('/');
-                    },
-                    onCancel: () => {},
+                },
+              })
+            );
+          }}
+        />
+        <Button
+          className="btn btn-primary btn-icon"
+          icon={editIcon}
+          onClick={() => {
+            dispatch(
+              openModal({
+                modalType: 'TASK_FORM',
+                modalProps: {
+                  isEdit: true,
+                  defaultValues: {
+                    title: task.title,
+                    dueDate: task.dueDate,
+                    description: task.description,
+                    status: task.status,
                   },
-                })
-              );
-            }}
-          />
-        </div>
+                  onSubmit: (data: {
+                    title: string;
+                    dueDate: string;
+                    description: string;
+                    status: Status;
+                  }) => {
+                    const updatedFields: Partial<Task> = {
+                      title: data.title,
+                      description: data.description,
+                      status: data.status,
+                      dueDate: new Date(data.dueDate).toISOString(),
+                    };
+                    dispatch(editTask(task.id, updatedFields));
+                    toast.success('Update task successfully');
+                    navigate('/');
+                  },
+                  onCancel: () => {},
+                },
+              })
+            );
+          }}
+        />
       </div>
     </section>
   );

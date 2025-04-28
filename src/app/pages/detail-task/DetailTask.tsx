@@ -8,5 +8,11 @@ interface DetailTaskProps {
 }
 
 export const DetailTask = ({ task: propTask, onClose }: DetailTaskProps) => {
-  return <DetailComponent />;
+  return (
+    <div className="dashboard">
+      <div className="container">
+        <DetailComponent />
+      </div>
+    </div>
+  );
 };
