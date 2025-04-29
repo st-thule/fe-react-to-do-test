@@ -63,7 +63,7 @@ export const ModalComponent = () => {
                 title: '',
                 dueDate: '',
                 description: '',
-                status: Status.NO_STARTED,
+                status: Status.NEW,
               }
             }
             onSubmit={(data: any) => {

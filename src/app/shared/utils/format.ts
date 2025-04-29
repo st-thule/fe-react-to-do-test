@@ -1,7 +1,9 @@
 import { format } from 'date-fns';
 
+import { statusLabel } from '@shared/constants/status';
+
 export const formatStatus = (status: string): string => {
-  return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  return statusLabel[status];
 };
 
 export const formatDate = (date: string): string => {

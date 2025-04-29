@@ -9,13 +9,13 @@ import { ModalTypes } from '@shared/utils/modal-type';
 import { Status } from '@shared/utils/status';
 
 interface IHeaderAddTaskProps {
-  userEmail: string;
+  userId: string;
   tasks: Task[];
   onClick?: () => void;
 }
 
 export const HeaderAddTask: React.FC<IHeaderAddTaskProps> = ({
-  userEmail,
+  userId,
   tasks,
 }) => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export const HeaderAddTask: React.FC<IHeaderAddTaskProps> = ({
                   title: '',
                   dueDate: '',
                   description: '',
-                  status: Status.NO_STARTED,
+                  status: Status.NEW,
                 },
                 onSubmit: (data: {
                   title: string;
@@ -46,7 +46,7 @@ export const HeaderAddTask: React.FC<IHeaderAddTaskProps> = ({
                     title: data.title,
                     description: data.description,
                     status: data.status,
-                    userEmail: userEmail,
+                    userId: userId,
                     createdAt: new Date().toISOString(),
                     dueDate: new Date(data.dueDate).toISOString(),
                   };

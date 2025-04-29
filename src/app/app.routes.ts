@@ -1,6 +1,6 @@
-import { RouteObject } from 'react-router-dom';
-
+import authRoutes from './core/auth/auth.routes';
+import { PageRoute } from './core/modules/custom-router-dom/router.interface';
 import pageRoutes from './pages/page.routes';
 
-const appRoutes: RouteObject[] = [...pageRoutes];
+const appRoutes: PageRoute[] = [...authRoutes, ...pageRoutes];
 export default appRoutes;

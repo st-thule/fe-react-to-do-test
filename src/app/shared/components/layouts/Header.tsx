@@ -2,18 +2,7 @@ import React from 'react';
 
 export const Header = () => {
   const today = new Date();
-
-  const dayNames = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-  const dayName = dayNames[today.getDay()];
-
+  const dayName = today.toLocaleString('en-US', { weekday: 'long' });
   const day = today.getDate();
   const month = today.getMonth() + 1;
   const year = today.getFullYear();

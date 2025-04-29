@@ -1,30 +1,31 @@
 import { format, isToday } from 'date-fns';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { TaskChart } from '@app/pages/dashboard/components/TaskChart';
 import completeTask from '@assets/icons/complete-task.svg';
 import completedIcon from '@assets/icons/completed-icon.svg';
 import pendingIcon from '@assets/icons/pending-icon.svg';
-import handWave from '@assets/images/hand-wave.png';
-import { CardComponent } from '@shared/components/partials/Card';
-import { HeaderAddTask } from '@shared/components/partials/HeaderAddTask';
+import { CardComponent } from '@shared/components/Card';
+import { HeaderAddTask } from '@shared/components/HeaderAddTask';
 import { Task } from '@shared/models/Task';
 import { RootState } from '@shared/redux/store';
 import { Status } from '@shared/utils/status';
+import Header from '../components/Header';
 
-export const DashBoard: React.FC = () => {
+const DashBoard = () => {
   const tasks = useSelector((state: RootState) => state.tasks.taskList);
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  const userEmail = currentUser?.email;
+  const userId = currentUser.id;
 
   const recentTasks = [...tasks]
-    .filter((task) => task.userEmail === userEmail)
+    .filter((task) => task.userId === userId)
     .sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
     .slice(0, 5);
+  //define vào service (đặt file là ...service- thay vì tương tác với endppint thì với localStorage, để tránh data lớn)
 
   const groupTasksByDate = (tasks: Task[]) => {
     const grouped: { [key: string]: Task[] } = {};
@@ -37,19 +38,15 @@ export const DashBoard: React.FC = () => {
     });
     return grouped;
   };
+  //define vào service (đặt file là ...service- thay vì tương tác với endppint thì với localStorage, để tránh data lớn)
   const groupedTasks = groupTasksByDate(recentTasks);
 
-  const completedTasks = tasks.filter(
-    (task) => task.status === Status.COMPLETED
-  );
+  const completedTasks = tasks.filter((task) => task.status === Status.DONE);
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-page">
       <div className="container">
-        <div className="dashboard-header">
-          <h2 className="title">Welcome {currentUser?.fullName || 'Guest'}</h2>
-          <img src={handWave} alt="hand wave" />
-        </div>
+        <Header />
         <div className="dashboard-content">
           <section className="section section-todos">
             <div className="section-header">
@@ -57,7 +54,7 @@ export const DashBoard: React.FC = () => {
                 <img src={pendingIcon} alt="pending icon" />
                 <h2 className="title">To-Do</h2>
               </div>
-              <HeaderAddTask tasks={tasks} userEmail={userEmail} />
+              <HeaderAddTask tasks={tasks} userId={userId} />
             </div>
             <div className="section-groups">
               {recentTasks.length === 0 ? (
@@ -125,3 +122,5 @@ export const DashBoard: React.FC = () => {
     </div>
   );
 };
+
+export default DashBoard;

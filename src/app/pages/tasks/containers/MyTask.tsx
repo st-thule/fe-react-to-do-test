@@ -3,25 +3,28 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@shared/redux/store';
 
 import { Task } from '@shared/models/Task';
-import { CardComponent } from '@shared/components/partials/Card';
-import { DetailComponent } from '@shared/components/partials/DetailComponent';
-import { HeaderAddTask } from '@shared/components/partials/HeaderAddTask';
-import { Filter } from '@shared/components/partials/Filter';
-import { Pagination } from '@shared/components/partials/Pagination';
+import { CardComponent } from '@shared/components/Card';
+import { DetailComponent } from '@shared/components/DetailComponent';
+import { HeaderAddTask } from '@shared/components/HeaderAddTask';
+import { Filter } from '@shared/components/Filter';
+import { Pagination } from '@shared/components/Pagination';
 import { paginate } from '@shared/utils/pagination';
+import { SortKey } from '@shared/utils/sort';
 
-export const MyTask = () => {
+const MyTask = () => {
   const tasks = useSelector((state: RootState) => state.tasks.taskList);
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const userEmail = currentUser?.email;
+  const userId = currentUser.id;
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterStatus, setFilterStatus] = useState<string>('All');
-  const [sortOrder, setSortOrder] = useState<string>('newest');
+  const [sortOrder, setSortOrder] = useState<string>(SortKey.NEWEST);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tasksPerPage = 5;
 
+  // filter task
   const filteredTasks = useMemo(() => {
     let result = [...tasks];
     if (searchQuery) {
@@ -35,12 +38,12 @@ export const MyTask = () => {
     result.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime();
       const dateB = new Date(b.createdAt).getTime();
-      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+      return sortOrder === SortKey.NEWEST ? dateB - dateA : dateA - dateB;
     });
     return result;
   }, [tasks, searchQuery, filterStatus, sortOrder]);
 
-  // Sử dụng hàm paginate
+  // pagination
   const { totalItems: totalTasks, paginatedItems: paginatedTasks } = paginate({
     items: filteredTasks,
     currentPage,
@@ -61,7 +64,7 @@ export const MyTask = () => {
               <div className="section-title">
                 <h2 className="title">To-Do</h2>
               </div>
-              <HeaderAddTask tasks={tasks} userEmail={userEmail || ''} />
+              <HeaderAddTask tasks={tasks} userId={userId} />
             </div>
             <div className="section-utility">
               <Filter
@@ -116,3 +119,5 @@ export const MyTask = () => {
     </section>
   );
 };
+
+export default MyTask;

@@ -3,12 +3,12 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import { Header } from '@shared/components/layouts/Header';
 import { SideBar } from '@shared/components/layouts/Sidebar';
-import { ModalComponent } from '@shared/components/partials/Modal';
-export const Page = () => {
+import { ModalComponent } from '@shared/components/Modal';
+const Page = () => {
   return (
     <>
       <Header />
-      <div className="page-content">
+      <div className="page-container">
         <SideBar />
         <main className="main">
           <Outlet />
@@ -18,3 +18,5 @@ export const Page = () => {
     </>
   );
 };
+
+export default Page;

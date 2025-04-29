@@ -5,7 +5,9 @@ export interface Task {
   title: string;
   status: Status;
   description: string;
-  userEmail: string;
+  userId: string;
   createdAt: string;
   dueDate?: string;
 }
+
+//mấy cái auth với task toàn bộ bỏ vào apiService

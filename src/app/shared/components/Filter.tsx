@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { Input } from './Input';
+import { Input } from './partials/Input';
 import { Status } from '@shared/utils/status';
 
 interface IFilterProps {
@@ -54,9 +54,9 @@ export const Filter: React.FC<IFilterProps> = ({
           onChange={(e) => onFilterStatus(e.target.value)}
         >
           <option value="All">All Status</option>
-          <option value={Status.NO_STARTED}>Not Started</option>
-          <option value={Status.IN_PROGRESS}>In Progress</option>
-          <option value={Status.COMPLETED}>Completed</option>
+          <option value={Status.NEW}>Not Started</option>
+          <option value={Status.PROGRESS}>In Progress</option>
+          <option value={Status.DONE}>Completed</option>
         </select>
       </div>
     </div>

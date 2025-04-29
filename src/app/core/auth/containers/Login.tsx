@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import Button from '@shared/components/partials/Button';
-import { Form } from '@shared/components/partials/Form';
+import { Form } from '@shared/components/Form';
 import { Input } from '@shared/components/partials/Input';
 import { login } from '@shared/redux/actions/authActions';
 import { RootState } from '@shared/redux/store';
@@ -15,18 +15,18 @@ interface ILoginForm {
   password: string;
 }
 
-export const Login: React.FC = () => {
+const Login = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<ILoginForm>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
+  // đưa phần này vào context
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,13 +41,11 @@ export const Login: React.FC = () => {
         email: data.email,
         password: data.password,
       };
-
       await dispatch(login(userLogin));
       toast.success('Login successfully');
       navigate('/');
     } catch (error) {
       toast.error('Invalid email or password');
-      reset({ email: '', password: '' });
     }
   };
 
@@ -94,6 +92,7 @@ export const Login: React.FC = () => {
               message: 'Password must be at least 6 characters',
             },
           }}
+          // làm thêm chỗ để hiển thị pass
           render={({ field }) => (
             <Input
               {...field}
@@ -120,3 +119,5 @@ export const Login: React.FC = () => {
     </div>
   );
 };
+
+export default Login;

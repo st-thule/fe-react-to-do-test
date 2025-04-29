@@ -1,12 +1,14 @@
 import React from 'react';
-import { RouteObject } from 'react-router-dom';
 
-import { DashBoard } from '@app/pages/dashboard/DashBoard';
-const dashboardRoute: RouteObject[] = [
+import { PageRoute } from '@app/core/modules/custom-router-dom/router.interface';
+
+const DashBoard = React.lazy(() => import('./containers/DashBoard'));
+const dashboardRoutes: PageRoute[] = [
   {
     path: '/',
-    element: React.createElement(DashBoard),
+    element: DashBoard,
+    isProtected: true,
   },
 ];
 
-export default dashboardRoute;
+export default dashboardRoutes;

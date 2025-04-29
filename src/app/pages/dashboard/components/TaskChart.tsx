@@ -9,14 +9,15 @@ interface ITaskChartProps {
 }
 export const TaskChart: React.FC<ITaskChartProps> = ({ tasks }) => {
   const totalTasks = tasks.length;
+
   const completedTasks = tasks.filter(
-    (task) => task.status === Status.COMPLETED
+    (task) => task.status === Status.DONE
   ).length;
   const inProgressTasks = tasks.filter(
-    (task) => task.status === Status.IN_PROGRESS
+    (task) => task.status === Status.PROGRESS
   ).length;
   const notStartedTasks = tasks.filter(
-    (task) => task.status === Status.NO_STARTED
+    (task) => task.status === Status.NEW
   ).length;
 
   const completedPercentage =

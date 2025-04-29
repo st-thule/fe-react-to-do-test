@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Button from '@shared/components/partials/Button';
-import { Form } from '@shared/components/partials/Form';
+import { Form } from '@shared/components/Form';
 import { Input } from '@shared/components/partials/Input';
 import { register } from '@app/shared/redux/actions/authActions';
 
@@ -16,7 +16,7 @@ interface IRegisterForm {
   confirmPassword: string;
 }
 
-export const Register: React.FC = () => {
+const Register = () => {
   const {
     control,
     handleSubmit,
@@ -38,18 +38,18 @@ export const Register: React.FC = () => {
   const onSubmit = async (data: IRegisterForm) => {
     try {
       const newUser = {
+        id: crypto.randomUUID(),
         fullName: data.fullName,
         email: data.email,
         password: data.password,
       };
+      // ko đưa cái này vào redux. tạo một cái apiService, khi lỗi thì nguyên cái validate màu đỏ
       await dispatch(register(newUser));
       toast.success('Register successfully');
       navigate('/login');
     } catch (error) {
       toast.error('Email is already exists');
-      setTimeout(() => {
-        reset({ fullName: '', email: '', password: '', confirmPassword: '' });
-      }, 4000);
+      reset({ fullName: '', email: '', password: '', confirmPassword: '' });
     }
   };
 
@@ -86,6 +86,7 @@ export const Register: React.FC = () => {
           rules={{
             required: 'Email is required',
             pattern: {
+              // cả form login và register đều dùng chung cái này
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
               message: 'Invalid email address',
             },
@@ -156,3 +157,5 @@ export const Register: React.FC = () => {
     </div>
   );
 };
+
+export default Register;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { Form } from '@app/shared/components/partials/Form';
+import { Form } from '@shared/components/Form';
 import { Status } from '@shared/utils/status';
 import Button from '@app/shared/components/partials/Button';
 import { Input } from '@shared/components/partials/Input';
@@ -28,7 +28,7 @@ export const FormTask: React.FC<IFormTaskProps> = ({
   defaultValues = {
     title: '',
     description: '',
-    status: Status.NO_STARTED,
+    status: Status.NEW,
     dueDate: '',
   },
   onSubmit,
@@ -98,8 +98,8 @@ export const FormTask: React.FC<IFormTaskProps> = ({
                   Not Started
                   <input
                     type="checkbox"
-                    checked={field.value === Status.NO_STARTED}
-                    onChange={() => field.onChange(Status.NO_STARTED)}
+                    checked={field.value === Status.NEW}
+                    onChange={() => field.onChange(Status.NEW)}
                   />
                   <span className="checkbox-custom"></span>
                 </label>
@@ -108,8 +108,8 @@ export const FormTask: React.FC<IFormTaskProps> = ({
                   In Progress
                   <input
                     type="checkbox"
-                    checked={field.value === Status.IN_PROGRESS}
-                    onChange={() => field.onChange(Status.IN_PROGRESS)}
+                    checked={field.value === Status.PROGRESS}
+                    onChange={() => field.onChange(Status.PROGRESS)}
                   />
                   <span className="checkbox-custom"></span>
                 </label>
@@ -118,8 +118,8 @@ export const FormTask: React.FC<IFormTaskProps> = ({
                   Completed
                   <input
                     type="checkbox"
-                    checked={field.value === Status.COMPLETED}
-                    onChange={() => field.onChange(Status.COMPLETED)}
+                    checked={field.value === Status.DONE}
+                    onChange={() => field.onChange(Status.DONE)}
                   />
                   <span className="checkbox-custom"></span>
                 </label>

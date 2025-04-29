@@ -12,6 +12,7 @@ import Button from '@shared/components/partials/Button';
 import { Task } from '@shared/models/Task';
 import deleteIcon from '@assets/icons/delete-icon.svg';
 import editIcon from '@assets/icons/edit-icon.svg';
+import { StatusTask } from './StatusTask';
 
 interface DetailComponentProps {
   task?: Task;
@@ -39,20 +40,7 @@ export const DetailComponent = ({ task: propTask }: DetailComponentProps) => {
         <Link to="/">Go Back</Link>
       </div>
       <div className="section-content">
-        <p className="section-subtitle">
-          Status:
-          <span
-            className={
-              task.status === Status.NO_STARTED
-                ? 'status-start'
-                : task.status === Status.IN_PROGRESS
-                ? 'status-progress'
-                : 'status-done'
-            }
-          >
-            {formatStatus(task.status)}
-          </span>
-        </p>
+        <StatusTask className="section-subtitle" status={task.status} />
         <p className="section-date">Created on: {formatDate(task.createdAt)}</p>
         <p className="section-desc">{task.description}</p>
       </div>
