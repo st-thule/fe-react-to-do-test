@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { AppDispatch, RootState } from '@shared/redux/store';
-import { logout } from '@shared/redux/actions/authActions';
-import { openModal } from '@shared/redux/actions/modalAction';
+import { AppDispatch, RootState } from '@app/store';
+import { logout } from '@app/store/actions/authActions';
+import { openModal } from '@app/store/actions/modalAction';
 import { ModalTypes } from '@shared/utils/modal-type';
 import { navList } from '@shared/constants/nav';
 import logoutIcon from '@assets/icons/logout-icon.svg';

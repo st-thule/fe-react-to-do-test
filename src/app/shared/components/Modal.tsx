@@ -2,10 +2,10 @@ import React from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { closeModal } from '@shared/redux/actions/modalAction';
-import { AppDispatch, RootState } from '@shared/redux/store';
+import { closeModal } from '@app/store/actions/modalAction';
+import { AppDispatch, RootState } from '@app/store';
 import { Status } from '@shared/utils/status';
-import { FormTask } from '@app/pages/components/FormTask';
+import { FormTask } from '@shared/components/FormTask';
 import Button from '@shared/components/partials/Button';
 import { ModalTypes } from '@shared/utils/modal-type';
 

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { openModal } from '@shared/redux/actions/modalAction';
-import { deleteTask, editTask } from '@shared/redux/actions/taskActions';
-import { AppDispatch, RootState } from '@shared/redux/store';
+import { openModal } from '@app/store/actions/modalAction';
+import { deleteTask, editTask } from '@app/store/actions/taskActions';
+import { AppDispatch, RootState } from '@app/store';
 import { Status } from '@shared/utils/status';
 import { formatStatus, formatDate } from '@shared/utils/format';
 import Button from '@shared/components/partials/Button';

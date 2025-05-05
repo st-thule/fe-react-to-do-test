@@ -3,7 +3,7 @@ import {
   LOGIN,
   LOGOUT,
   REGISTER,
-} from '@shared/redux/actions/type/authActionTypes';
+} from '@app/store/actions/type/authActionTypes';
 
 export const register = (user: User) => {
   return {

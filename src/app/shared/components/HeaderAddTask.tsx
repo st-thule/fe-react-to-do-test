@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { Task } from '@shared/models/Task';
-import { openModal } from '@shared/redux/actions/modalAction';
-import { addTask } from '@shared/redux/actions/taskActions';
+import { openModal } from '@app/store/actions/modalAction';
+import { addTask } from '@app/store/actions/taskActions';
 import { ModalTypes } from '@shared/utils/modal-type';
 import { Status } from '@shared/utils/status';
 

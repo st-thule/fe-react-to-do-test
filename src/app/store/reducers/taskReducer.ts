@@ -3,12 +3,12 @@ import {
   ADD_TASK,
   DELETE_TASK,
   EDIT_TASK,
-} from '@shared/redux/actions/type/taskActionTypes';
+} from '@app/store/actions/type/taskActionTypes';
 import {
   getDataFromLocalStorage,
   LocalStorageKeys,
   setDataToLocalStorage,
-} from '@shared/utils/local-storage';
+} from '@core/helpers/storage.helper';
 
 interface TaskState {
   taskList: Task[];

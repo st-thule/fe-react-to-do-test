@@ -4,12 +4,12 @@ import {
   LocalStorageKeys,
   removeItemFromLocalStorage,
   setDataToLocalStorage,
-} from '@shared/utils/local-storage';
+} from '@core/helpers/storage.helper';
 import {
   LOGIN,
   LOGOUT,
   REGISTER,
-} from '@shared/redux/actions/type/authActionTypes';
+} from '@app/store/actions/type/authActionTypes';
 
 interface AuthState {
   users: User[];

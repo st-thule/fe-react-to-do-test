@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '@shared/redux/store';
+import { RootState } from '@app/store';
 
 import { Task } from '@shared/models/Task';
 import { CardComponent } from '@shared/components/Card';

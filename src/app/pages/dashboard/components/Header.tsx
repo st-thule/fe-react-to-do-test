@@ -2,7 +2,7 @@ import React from 'react';
 
 import handWave from '@assets/images/hand-wave.png';
 import { useSelector } from 'react-redux';
-import { RootState } from '@shared/redux/store';
+import { RootState } from '@app/store';
 
 const Header = () => {
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);

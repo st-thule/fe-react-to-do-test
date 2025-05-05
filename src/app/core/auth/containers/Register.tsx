@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/Form';
 import { Input } from '@shared/components/partials/Input';
-import { register } from '@app/shared/redux/actions/authActions';
+import { register } from '@app/store/actions/authActions';
 
 interface IRegisterForm {
   fullName: string;

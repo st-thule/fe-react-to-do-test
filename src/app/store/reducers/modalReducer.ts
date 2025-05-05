@@ -1,11 +1,11 @@
 import {
   CloseModalAction,
   OpenModalAction,
-} from '@shared/redux/actions/modalAction';
+} from '@app/store/actions/modalAction';
 import {
   CLOSE_MODAL,
   OPEN_MODAL,
-} from '@shared/redux/actions/type/modalActionTypes';
+} from '@app/store/actions/type/modalActionTypes';
 
 interface ModalState {
   isOpen: boolean;

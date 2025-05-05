@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/Form';
 import { Input } from '@shared/components/partials/Input';
-import { login } from '@shared/redux/actions/authActions';
-import { RootState } from '@shared/redux/store';
+import { login } from '@app/store/actions/authActions';
+import { RootState } from '@app/store';
 
 interface ILoginForm {
   email: string;

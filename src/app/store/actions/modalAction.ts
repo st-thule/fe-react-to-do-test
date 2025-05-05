@@ -3,7 +3,7 @@ import { Action } from 'redux';
 import {
   CLOSE_MODAL,
   OPEN_MODAL,
-} from '@shared/redux/actions/type/modalActionTypes';
+} from '@app/store/actions/type/modalActionTypes';
 
 export interface OpenModalPayload {
   modalType: 'CONFIRM' | 'TASK_FORM';
