@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import {
   getDataFromLocalStorage,
   LocalStorageKeys,
@@ -6,7 +8,7 @@ import {
 import { Task } from '@shared/models/Task';
 import { SortKey } from '@shared/utils/sort';
 import { Status } from '@shared/utils/status';
-import { format, set } from 'date-fns';
+import { paginate } from '@shared/utils/pagination';
 
 interface GetAllTasksOptions {
   page?: number;
@@ -16,88 +18,60 @@ interface GetAllTasksOptions {
   keyword?: string;
 }
 
-class TaskServce {
-  private getAll(): Task[] {
-    const data = getDataFromLocalStorage(LocalStorageKeys.TASKS, []);
-    return data;
+class TaskService {
+  private getTasks(): Task[] {
+    const tasks = getDataFromLocalStorage(LocalStorageKeys.TASKS, []);
+    return tasks;
   }
 
-  private groupTasksByDate(tasks: Task[]) {
-    const grouped: { [date: string]: Task[] } = {};
-
-    tasks.forEach((task) => {
-      const dateKey = format(new Date(task.createdAt), 'dd MMMM');
-      if (!grouped[dateKey]) {
-        grouped[dateKey] = [];
-      }
-      grouped[dateKey].push(task);
-    });
-
-    return grouped;
-  }
-
-  async getAllTasksByGroupDate(userId: string) {
-    const tasks = this.getAll().filter((task) => task.userId === userId);
-
-    const recentTasks = [...tasks]
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      )
-      .slice(0, 5);
-
-    const groupedTasks = this.groupTasksByDate(tasks);
-
-    return {
-      recentTasks,
-      groupedTasks,
-    };
+  private saveTasks(tasks: Task[]) {
+    setDataToLocalStorage(LocalStorageKeys.TASKS, tasks);
   }
 
   async addTask(task: Task) {
-    const tasks = this.getAll();
+    const tasks = this.getTasks();
     tasks.push(task);
-    setDataToLocalStorage(LocalStorageKeys.TASKS, tasks);
+    this.saveTasks(tasks);
   }
 
-  async updateTask(taskId: string, updatedTask: Partial<Task>) {
-    const tasks = this.getAll();
+  async updateTask(taskId: string, updateTask: Partial<Task>) {
+    const tasks = this.getTasks();
     const index = tasks.findIndex((task) => task.id === taskId);
-    if (index !== -1) {
-      tasks[index] = { ...tasks[index], ...updatedTask };
-      setDataToLocalStorage(LocalStorageKeys.TASKS, tasks);
+    if (index !== 1) {
+      tasks[index] = { ...tasks[index], ...updateTask };
+      this.saveTasks(tasks);
     }
   }
 
-  async deleteTask({ taskId, userId }: { taskId: string; userId: string }) {
-    const tasks = this.getAll().filter(
+  async deleteTask(taskId: string, userId: string) {
+    const tasks = this.getTasks().filter(
       (task) => !(task.id === taskId && task.userId === userId)
     );
-    setDataToLocalStorage(LocalStorageKeys.TASKS, tasks);
+
+    this.saveTasks(tasks);
   }
 
   async getTaskById(taskId: string) {
-    return this.getAll().find((task) => task.id === taskId);
+    return this.getTasks().find((task) => task.id === taskId);
   }
 
-  async getAllTaskByUser(userId: string, options?: GetAllTasksOptions) {
+  async getTasksByUser(userId: string, options?: GetAllTasksOptions) {
     const {
       page = 1,
       pageSize = 10,
-      sortOrder = 'desc',
-      status = 'All',
+      sortOrder = SortKey.ALL,
+      status = Status.NEW,
       keyword = '',
     } = options || {};
 
-    let tasks = this.getAll().filter((task) => task.userId === userId);
-
+    let tasks = this.getTasks().filter((task) => task.userId === userId);
     if (keyword.trim()) {
-      const q = keyword.trim().toLowerCase();
-      tasks = tasks.filter((task) => task.title.toLowerCase().includes(q));
+      const word = keyword.trim().toLowerCase();
+      tasks = tasks.filter((task) => task.title.toLowerCase().includes(word));
     }
 
-    if (status !== 'All') {
-      tasks = tasks.filter((task) => task.status === status);
+    if (status === Status.DONE) {
+      tasks = tasks.filter((task) => task.status === Status.DONE);
     }
 
     tasks.sort((a, b) => {
@@ -106,11 +80,6 @@ class TaskServce {
       return sortOrder === SortKey.NEWEST ? timeB - timeA : timeA - timeB;
     });
 
-    const totalItems = tasks.length;
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedTasks = tasks.slice(startIndex, endIndex);
-
     const recentTasks = [...tasks]
       .sort(
         (a, b) =>
@@ -118,15 +87,31 @@ class TaskServce {
       )
       .slice(0, 5);
 
-    const groupedTasks = this.groupTasksByDate(tasks);
+    const groupedByDate: { [date: string]: Task[] } = {};
+    recentTasks.forEach((task) => {
+      const dateKey = format(new Date(task.createdAt), 'dd MMMM yyyy');
+      if (!groupedByDate[dateKey]) {
+        groupedByDate[dateKey] = [];
+      }
+      groupedByDate[dateKey].push(task);
+    });
+
+    const { paginatedItems, totalItems, startIndex, endIndex } = paginate({
+      items: tasks,
+      currentPage: page,
+      itemsPerPage: pageSize,
+    });
 
     return {
-      paginatedTasks,
-      totalItems,
-      recentTasks,
-      groupedTasks,
+      paginate: {
+        totalItems,
+        startIndex,
+        endIndex,
+        tasks: paginatedItems,
+      },
+      groupedByDate,
     };
   }
 }
 
-export const taskService = new TaskServce();
+export const taskService = new TaskService();

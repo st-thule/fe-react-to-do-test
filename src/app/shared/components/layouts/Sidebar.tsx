@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { AppDispatch, RootState } from '@app/store';
-import { logout } from '@app/store/actions/authActions';
 import { openModal } from '@app/store/actions/modalAction';
 import { ModalTypes } from '@shared/utils/modal-type';
 import { navList } from '@shared/constants/nav';
 import logoutIcon from '@assets/icons/logout-icon.svg';
+import { AuthContext, AuthProvider } from '@shared/context/auth.context';
 
 export const SideBar = () => {
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+  const userContext = useContext(AuthContext);
+  const userId = userContext.getCurrentUserId();
+
+  console.log(userId);
 
   return (
     <aside className="sidebar">
       <h2 className="title">
-        {currentUser?.fullName}
-        <span>{currentUser?.email}</span>
+        {/* {currentUser?.fullName}
+        <span>{currentUser?.email}</span> */}
       </h2>
 
       <div className="sidebar-content">
@@ -54,7 +57,7 @@ export const SideBar = () => {
                   title: 'Confirm logout',
                   message: 'Are you sure to logout?',
                   onConfirm: () => {
-                    dispatch(logout());
+                    // dispatch(logout());
                     toast.success('You logged out');
                   },
                 },

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/Form';
+import Button from '@shared/components/partials/Button';
 import { Input } from '@shared/components/partials/Input';
-import { login } from '@app/store/actions/authActions';
-import { RootState } from '@app/store';
+import { AuthContext } from '@shared/context/auth.context';
+import userService from '@shared/services/user.service';
+import { regrex } from '@shared/constants/regrex';
 
 interface ILoginForm {
   email: string;
@@ -26,9 +26,9 @@ const Login = () => {
       password: '',
     },
   });
-  // đưa phần này vào context
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  const dispatch = useDispatch();
+
+  const authContext = useContext(AuthContext);
+  const currentUser = authContext.isUserLoggedIn();
   const navigate = useNavigate();
 
   if (currentUser) {
@@ -41,7 +41,7 @@ const Login = () => {
         email: data.email,
         password: data.password,
       };
-      await dispatch(login(userLogin));
+      await userService.login(userLogin.email, userLogin.password);
       toast.success('Login successfully');
       navigate('/');
     } catch (error) {
@@ -50,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div className="register">
+    <div className="auth-wrapper">
       <Form
         className="form form-auth"
         onSubmit={handleSubmit(onSubmit)}
@@ -68,7 +68,7 @@ const Login = () => {
           rules={{
             required: 'Email is required',
             pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              value: regrex.regresValue,
               message: 'Invalid email address',
             },
           }}
@@ -92,7 +92,6 @@ const Login = () => {
               message: 'Password must be at least 6 characters',
             },
           }}
-          // làm thêm chỗ để hiển thị pass
           render={({ field }) => (
             <Input
               {...field}

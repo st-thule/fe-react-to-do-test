@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
 
 import { Task } from '@shared/models/Task';
 import { openModal } from '@app/store/actions/modalAction';
-import { addTask } from '@app/store/actions/taskActions';
 import { ModalTypes } from '@shared/utils/modal-type';
 import { Status } from '@shared/utils/status';
+import { taskService } from '@shared/services/task.service';
 
 interface IHeaderAddTaskProps {
   userId: string;
@@ -19,6 +19,15 @@ export const HeaderAddTask: React.FC<IHeaderAddTaskProps> = ({
   tasks,
 }) => {
   const dispatch = useDispatch();
+  const handleAddTask = async (newTask: Task) => {
+    try {
+      await taskService.addTask(newTask);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
   return (
     <div className="section-action">
       <p
@@ -50,7 +59,7 @@ export const HeaderAddTask: React.FC<IHeaderAddTaskProps> = ({
                     createdAt: new Date().toISOString(),
                     dueDate: new Date(data.dueDate).toISOString(),
                   };
-                  dispatch(addTask(newTask));
+                  handleAddTask(newTask);
                   toast.success('Add task successfully');
                 },
               },

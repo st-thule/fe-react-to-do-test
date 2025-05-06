@@ -1,13 +1,13 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import Button from '@shared/components/partials/Button';
 import { Form } from '@shared/components/Form';
+import Button from '@shared/components/partials/Button';
 import { Input } from '@shared/components/partials/Input';
-import { register } from '@app/store/actions/authActions';
+import userService from '@shared/services/user.service';
+import { regrex } from '@shared/constants/regrex';
 
 interface IRegisterForm {
   fullName: string;
@@ -32,7 +32,6 @@ const Register = () => {
     },
   });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = async (data: IRegisterForm) => {
@@ -43,8 +42,7 @@ const Register = () => {
         email: data.email,
         password: data.password,
       };
-      // ko đưa cái này vào redux. tạo một cái apiService, khi lỗi thì nguyên cái validate màu đỏ
-      await dispatch(register(newUser));
+      await userService.register(newUser);
       toast.success('Register successfully');
       navigate('/login');
     } catch (error) {
@@ -54,7 +52,7 @@ const Register = () => {
   };
 
   return (
-    <div className="register">
+    <div className="auth-wrapper">
       <Form
         className="form form-auth"
         onSubmit={handleSubmit(onSubmit)}
@@ -86,8 +84,7 @@ const Register = () => {
           rules={{
             required: 'Email is required',
             pattern: {
-              // cả form login và register đều dùng chung cái này
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              value: regrex.regresValue,
               message: 'Invalid email address',
             },
           }}

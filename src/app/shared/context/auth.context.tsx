@@ -1,64 +1,86 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@shared/models/User';
-import userService from '@shared/services/user.service';
+import React from 'react';
+import { createContext } from 'react';
 
-interface AuthContextType {
-  currentUser: User | null;
-  login: (email: string, password: string) => boolean;
-  logout: () => void;
-  register: (user: User) => boolean;
+import {
+  getDataFromLocalStorage,
+  LocalStorageKeys,
+  setDataToLocalStorage,
+} from '@app/core/helpers/storage.helper';
+import { User } from '@shared/models/User';
+import { ReactNode, useEffect, useState } from 'react';
+
+export interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  setUserSession: (user: User) => void;
+  clearUserSession: () => void;
+  getCurrentUserId: () => string | null;
+  isUserLoggedIn: () => boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  isAuthenticated: false,
+  setUserSession: () => {},
+  clearUserSession: () => {},
+  getCurrentUserId: () => null,
+  isUserLoggedIn: () => false,
+});
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const storedUser = userService.getCurrentUser();
-    if (storedUser) {
-      setCurrentUser(await storedUser);
+    const currentUser = getDataFromLocalStorage(
+      LocalStorageKeys.CURRENT_USER,
+      null
+    );
+
+    if (currentUser) {
+      setUser(currentUser);
+      setIsAuthenticated(true);
     }
   }, []);
 
-  const login = (email: string, password: string): boolean => {
-    const user = userService.login(email, password);
-    if (user) {
-      setCurrentUser(await user);
-      return true;
-    }
-    return false;
+  const setUserSession = (user: User) => {
+    setUser(user);
+    setIsAuthenticated(true);
+    setDataToLocalStorage(LocalStorageKeys.CURRENT_USER, user);
   };
 
-  const logout = () => {
-    userService.logout();
-    setCurrentUser(null);
+  const clearUserSession = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    setDataToLocalStorage(LocalStorageKeys.CURRENT_USER, user);
   };
 
-  const register = (user: User): boolean => {
-    try {
-      userService.register(user);
-      return true;
-    } catch (error) {
-      console.error('Register error:', (error as Error).message);
-      return false;
-    }
+  const getCurrentUserId = (): string => {
+    const currentUser = getDataFromLocalStorage(
+      LocalStorageKeys.CURRENT_USER,
+      null
+    );
+    return currentUser?.id;
   };
 
+  const isUserLoggedIn = (): boolean => {
+    return !!getDataFromLocalStorage(LocalStorageKeys.CURRENT_USER, null);
+  };
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, register }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        setUserSession,
+        clearUserSession,
+        getCurrentUserId,
+        isUserLoggedIn,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-};
-
-export default AuthProvider;
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

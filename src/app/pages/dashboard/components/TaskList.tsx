@@ -1,15 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import { format, isToday } from 'date-fns';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { CardComponent } from '@shared/components/Card';
-import { RootState } from '@app/store';
+import { AuthContext } from '@shared/context/auth.context';
 import { Task } from '@shared/models/Task';
 
 const TaskList = () => {
-  const tasks = useSelector((state: RootState) => state.tasks.taskList);
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  const userId = currentUser.id;
+  const [tasks, setTasks] = useState<Task[]>(null);
+  useEffect(() => {
+    
+  }, []);
+
+  const authContext = useContext(AuthContext);
+  const userId = authContext.getCurrentUserId();
 
   const recentTasks = [...tasks]
     .filter((task) => task.userId === userId)
@@ -30,7 +33,6 @@ const TaskList = () => {
     });
     return grouped;
   };
-  //define vào service (đặt file là ...service- thay vì tương tác với endppint thì với localStorage, để tránh data lớn)
   const groupedTasks = groupTasksByDate(recentTasks);
 
   return (
